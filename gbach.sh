@@ -23,7 +23,7 @@
 
 #! /bin/bash
 
-# set these to execute the script in auto-check mode, otherwise
+# set these variables to execute the script in auto-check mode, otherwise
 # it runs in interactive mode.
 user=""
 password=""
