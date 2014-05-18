@@ -1,4 +1,5 @@
-<h1>GBaCh (Gmail Bach Checker) <h1> <h3is a Bash script that shows you how many unread
+<h1>GBaCh (Gmail Bach Checker) <h1>
+<h3>is a Bash script that shows you how many unread
 emails you have, and their title.</h3>
 
 This script downloads the email feed of your gmail mailbox and print
