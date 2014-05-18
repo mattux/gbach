@@ -31,7 +31,7 @@ password=""
 # interactive mode
 if [[ $user == "" && $password == "" ]]
    then
-      echo -e "\nnome utente:";
+      echo -e "\nusername:";
       read user
 
       echo -e "\npassword:";
