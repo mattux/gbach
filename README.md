@@ -1,0 +1,15 @@
+GBaCh (Gmail Bach Checker) is a Bash script that shows you how many unread
+emails you have, and their title.
+
+This script downloads the email feed of your gmail mailbox and print
+the number, and the title of the unread emails.
+
+It works in two different ways:
+- interactive mode: the script asks you the credentials;
+- non-interactive mode: the script don't asks you anything.
+
+To activate the "non-interactive mode", just set $user
+and $password in the source code, like this:
+
+user="my_username"
+password="my_password"
