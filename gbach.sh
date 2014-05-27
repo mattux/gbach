@@ -1,4 +1,5 @@
 #  gbach.sh
+#  ver 0.2
 #
 #  Copyright © 2014 mattux <andovais@gmail.com>
 #  This work is free. You can redistribute it and/or modify it under the
@@ -23,14 +24,13 @@
 
 #! /bin/bash
 
-# set these variables to execute the script in auto-check mode, otherwise
+# set these to execute the script in non-interactive mode, otherwise
 # it runs in interactive mode.
-user=""
-password=""
+user="";
+password="";
 
 # interactive mode
-if [[ $user == "" && $password == "" ]]
-   then
+if [[ $user == "" && $password == "" ]];  then
       echo -e "\nusername:";
       read user
 
@@ -39,24 +39,26 @@ if [[ $user == "" && $password == "" ]]
 fi
 
 # retrieving the email feed
-mail=$(curl -u $user:$password --silent "https://mail.google.com/mail/feed/atom" | sed -n '/<title>/p' |  sed s/\<title\>//g| sed s/\&quot\;/\"/g);
+# donloading the feed | isolating lines that starts with <fullcount> and <title> | removing </title> | transforming &quote in "
+email=$(curl -u $user:$password --silent "https://mail.google.com/mail/feed/atom" | egrep "<fullcount>|<title>" |  sed s/\<title\>//g| sed s/\&quot\;/\"/g);
 
-n_email="Network problem. I'm not able to retrieve the email feed"
 
-# fields number = n_email + 1
-if [[ $mail != "" ]]
-   then
-      n_email=$(echo $mail | awk -F '</title>' '{print NF}');
-      n_email=$(echo "$n_email - 2" | bc)
+n_email="Network problem. I'm not able to retrieve the email feed.";
+# getting the number of undread emails
+if [[ $email != "" ]];  then
+      n_email=$(echo $email | grep -o "<fullcount>[0-9]</fullcount>" | grep -o [0-9]);
 fi
 
 echo -e "($n_email)";
 
+# deleting the number of unread emails (<fullcount>NUMBER</fullcount)
+email=$(echo $email | sed 's/<fullcount>[0-9]<\/fullcount>//');
+
+
 # printing the titles of the emails one per line
-if [[ $n_email > 0 ]]
-   then
-      echo $mail | awk 'BEGIN { RS = "" ; FS = "</title>" } { for (i = 2; i <= NF-1; i++) print "-",$i }'
-      # de-comment the following line to enable the notify
+if [[ $n_email > 0 ]];  then
+      echo $email | awk 'BEGIN { RS = "" ; FS = "</title>" } { for (i = 2; i <= NF-1; i++) print "-",$i }'
+      # uncomment the following line to enable the notify
       #notify-send "$n_email emails to read!"
 fi
 
