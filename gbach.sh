@@ -1,5 +1,5 @@
 #  gbach.sh
-#  ver 0.2
+#  ver 0.3
 #
 #  Copyright © 2014 mattux <andovais@gmail.com>
 #  This work is free. You can redistribute it and/or modify it under the
