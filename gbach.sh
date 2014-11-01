@@ -40,19 +40,19 @@ fi
 
 # retrieving the email feed
 # donloading the feed | isolating lines that starts with <fullcount> and <title> | removing </title> | transforming &quote in "
-email=$(curl -u $user:$password --silent "https://mail.google.com/mail/feed/atom" | egrep "<fullcount>|<title>" |  sed s/\<title\>//g| sed s/\&quot\;/\"/g);
+email=$(curl -u $user:$password --silent "https://mail.google.com/mail/feed/atom" | egrep -o "<fullcount>+[0-9]*</fullcount>|<title>*[[:alpha:],[:punct:],[:space:],[0-9]{0,100}]*</title>" |  sed s/\<title\>//g| sed s/\&quot\;/\"/g);
 
 
 n_email="Network problem. I'm not able to retrieve the email feed.";
 # getting the number of undread emails
 if [[ $email != "" ]];  then
-      n_email=$(echo $email | grep -o "<fullcount>[0-9]</fullcount>" | grep -o [0-9]);
+      n_email=$(echo $email | grep -o "<fullcount>[0-9]*</fullcount>" | grep -o [0-9]*);
 fi
 
 echo -e "($n_email)";
 
 # deleting the number of unread emails (<fullcount>NUMBER</fullcount)
-email=$(echo $email | sed 's/<fullcount>[0-9]<\/fullcount>//');
+email=$(echo $email | sed 's/<fullcount>[0-9]*<\/fullcount>//');
 
 
 # printing the titles of the emails one per line
